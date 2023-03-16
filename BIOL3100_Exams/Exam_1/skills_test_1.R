@@ -21,6 +21,8 @@ A_states <- cleaned_covid_data[grepl(pattern = "A",
   # Targeting Province_State column
   # Not ignoring case so that it only uses first letters of state names
 
+  # Could have used "^A" instead
+
 # III
 
 A_states %>% 
@@ -35,6 +37,10 @@ A_states %>%
   # as.Date because it was treating the dates as characters and not making line
   # Looked up facets to figure out. Row variables = the states.
   # Scales = free to make relative to data
+
+  # Could have used facet_wrap
+  # scales could also have been "free_x"
+  # Would have been nice to do different color for line
 
 # IV
 
@@ -64,6 +70,8 @@ Peak_Fatalities %>%
   # theme_dark and colors cause it looks cool
   # Extra theme at end to alter element_text
   
+  # Still not sure why element_text made me put hjust and vjust to get angle to work
+  
 # VI
 cumulativeplot <- cleaned_covid_data %>% 
   group_by(Last_Update) %>% 
@@ -78,3 +86,5 @@ cumulativeplot %>%
   theme_minimal()
 
   # Regular ol' plot
+
+  # Oh shit, could have fixed x axis text. So it goes.

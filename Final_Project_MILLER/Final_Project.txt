@@ -1,0 +1,17 @@
+Final Project Idea:
+Data Analysis of Facebook Page Meme page.
+
+My idea for a data analysis project is to use the Insights data provided by the Meta business suite for the meme page I co-admin.
+When users create pages on Facebook, Meta Business Suite is the interface through which the pages are run. Facebook being Facebook,
+it compiles a lot of data. I have already found how to export the data (it's in Spanish because my Facebook is in Spanish, but easily 
+translated.) Luckily the files from Meta are already .csvs.
+
+There is a lot of data available here. To simplify things, I will just use the data for 2022, which is when the page was already relatively
+successful, but quickly growing. The thing I am interested in is comparing how our OC (original content) compares to reshares.
+posts. I read somewhere that the shared vs original content ratio on most websites was over 10:1.
+Our page has a lot of both OC and reshares, so I'm curious which tend to do better and which have contributed more to our page's growth.
+OC is important for page reputation (not being just another "reshare page"), but how important is it quantitatively.
+Another dimension of analysis could be comparing the success of the three admins using those two categories. Ie. Maybe my OC is the best, but
+my friend David is so good at spotting good content for resharing that he's contributed more to the page's reach overall.
+The data I can get from Meta also includes demographics, different types of audience engagement, etc. So this project can be modified/expanded
+relatively easily.

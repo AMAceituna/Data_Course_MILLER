@@ -1,5 +1,4 @@
-# Loading up data for final project
-  # 4/7/2023
+# Cleaning Data
 
 library(tidyverse)
 library(dplyr)
@@ -47,7 +46,7 @@ dfyear <- dfyear %>% select(date_hour=hora_de_publicacion,post_id=identificador_
                             other_clicks=otros_clics, photo_views=visualizaciones_de_fotos,
                             link_clicks=clics_en_el_enlace, three_second_video_plays=reproduccion_de_video_de_3_segundos,
                             comments=comentarios, likes=me_gusta, shares=veces_compartido,
-                            interactions=interacciones, reach=personas_alcanzadas,
+                            engagements=interacciones, reach=personas_alcanzadas,
                             impressions=impresiones, hidden_unique_negative_comments=comentarios_negativos_unicos_de_los_usuarios_ocultar,
                             all_hidden_unique_negative_comments=comentarios_negativos_unicos_de_los_usuarios_ocultar_todo)
 
@@ -81,16 +80,21 @@ class(dfyear$date)
 # We need a new variable to show what is or is not OC
   # Need to pick out character strings from the descriptions
 
+dfyear$description %>% 
+  unique()
+
+dfyear %>% 
+  mutate
+
 # Gonna need to manually input it if we want to show who made which posts.
   # That means manually scrolling the page's Facebook feed and writing who made what.
   # ...For hundreds of posts across a whole year.
   # Why doesn't Meta just record which admin made what in Business Suite?
   # The Zucc does not like to be questioned.
 
-
-
-
-
+# For now let's play a little with what we've got
+dfyear %>% 
+  write.csv("./dfyear.csv")
 
 
 

@@ -37,13 +37,25 @@ dfyear %>%
   geom_point() +
   theme_lucid() +
   theme(axis.text.x = element_text(angle = 90))
+# Eh.
 
 dfyear %>% 
-  ggplot(aes(y = impressions)) +
+  ggplot(aes(x = log10(impressions),color = isOc)) +
   geom_histogram() +
   theme_lucid() +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 0)) 
+# Oh this actually gud
 
-# These are all sort of just worse versions of that.
-  # Fix OC and date/time variables and come back to this.
+dfyear %>% 
+  group_by(isOc) %>% 
+  summarize(count=n(), meanI = mean(impressions), sd(impressions))
+
+dfyear %>% 
+  group_by(isOc) %>% 
+  summarize(count=n(), meanS = mean(shares), sd(shares))
+
+lratio <- dfyear %>%
+  mutate(likeratio = likes/impressions)
+
+# Looking around at some stuff
 

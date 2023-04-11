@@ -50,7 +50,6 @@ dfyear <- dfyear %>% select(date_hour=hora_de_publicacion,post_id=identificador_
                             impressions=impresiones, hidden_unique_negative_comments=comentarios_negativos_unicos_de_los_usuarios_ocultar,
                             all_hidden_unique_negative_comments=comentarios_negativos_unicos_de_los_usuarios_ocultar_todo)
 
-view(dfyear)
 # Now it's less busy and has Anglo-ish columns.
 
 # This selection bugs me for a few reasons.
@@ -70,12 +69,12 @@ view(dfyear)
 
 dfyear <- dfyear %>% 
   separate_wider_delim(date_hour, delim = " ", names = c("date", "time"))
-  # Time already in 24hr time because fr why does anyone use anything else?
+# Time already in 24hr time because fr why does anyone use anything else?
 class(dfyear$date)
-  # Okay should probably change that
+# Okay should probably change that
 # dfyear$date <- as.Date(dfyear$date)
-  # That's not working out great. Doesn't seem to recognize the mm/dd/yyyy format.
-  # Figure out how to fix this later
+# That's not working out great. Doesn't seem to recognize the mm/dd/yyyy format.
+# Figure out how to fix this later
 
 # We need a new variable to show what is or is not OC
   # Need to pick out character strings from the descriptions
@@ -83,8 +82,28 @@ class(dfyear$date)
 dfyear$description %>% 
   unique()
 
+oc <- grep("OC",dfyear$description)
+oc2 <- grep("O.c",dfyear$description)
+oc3 <- grep("oc", dfyear$description)
+oc4 <- grep("O.C",dfyear$description)
+oc5 <- grep("\\(O\\)",dfyear$description)
+oc6 <- grep("\\(o\\)",dfyear$description)
+
+oc<-append(oc, oc2)
+oc<-append(oc, oc3)
+oc<-append(oc, oc4)
+oc<-append(oc, oc5)
+
+oc <- oc %>% 
+  unique()
+
+dfyear$vectorific <- vectorific <- c(1:693)
+class(vectorific)
+isOc<- vectorific %in% oc 
 dfyear %>% 
-  mutate
+  filter(.by = vectorific %in% oc)
+
+dfyear$isOc = isOc
 
 # Gonna need to manually input it if we want to show who made which posts.
   # That means manually scrolling the page's Facebook feed and writing who made what.
@@ -92,9 +111,7 @@ dfyear %>%
   # Why doesn't Meta just record which admin made what in Business Suite?
   # The Zucc does not like to be questioned.
 
-# For now let's play a little with what we've got
-dfyear %>% 
-  write.csv("./dfyear.csv")
+
 
 
 

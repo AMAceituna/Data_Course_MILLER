@@ -59,3 +59,21 @@ lratio <- dfyear %>%
 
 # Looking around at some stuff
 
+library(prophet)
+  # Let's see what this does
+
+prophet::generated_holidays
+view(generated_holidays)
+  # Okay cool. Goes all the way to 2044. Idk if it's useful for us, as we've only 
+  # got a year of data. Maybe see how any given American holiday affects engagement?
+
+# dfyear %>% 
+#   prophet()
+  # It's just a little cranky cause daddy Zucc didn't hug it enough as a child.
+Pdfyear <- dfyear
+Pdfyear$ds <- Pdfyear$date
+Pdfyear$y <- Pdfyear$impressions
+P <- Pdfyear %>% 
+  prophet()
+# Uh... Okay
+prophet::

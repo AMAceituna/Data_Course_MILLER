@@ -17,41 +17,115 @@ jan <- read.csv("./raw_csvs/Dec-31-2021_Mar-31-2022.csv")
 jul <- read.csv("./raw_csvs/Jul-01-2022_Sep-30-2022.csv")
 oct <- read.csv("./raw_csvs/Oct-01-2022_Dec-30-2022.csv")
 
+# Adding 2021 because want to use Prophet package seasonality
+apr2 <- read.csv("./raw_csvs/Apr-01-2021_Jun-30-2021.csv")
+jan2 <- read.csv("./raw_csvs/Dec-31-2020_Mar-31-2021.csv")
+jul2 <- read.csv("./raw_csvs/Jul-01-2021_Sep-30-2021.csv")
+oct2 <- read.csv("./raw_csvs/Oct-01-2021_Dec-30-2021.csv")
+
+# Adding 2023 so far cause wanna see if that April bump holds
+jan3 <- read.csv("./raw_csvs/Dec-31-2022_Mar-31-2023.csv")
+apr3 <- read.csv("./raw_csvs/Apr-01-2023_Apr-30-2023.csv")
+
 head(apr)
 glimpse(apr)
 # Wow this is going to be annoying
   # Why is my facebook in Spanish again?
-  # Soy ehstoopeed
+  # Soy ehstoopeedo
 
 apr <- janitor::clean_names(apr)
 jan <- janitor::clean_names(jan)
 jul <- janitor::clean_names(jul)
 oct <- janitor::clean_names(oct)
+
+apr2 <- janitor::clean_names(apr2)
+jan2 <- janitor::clean_names(jan2)
+jul2 <- janitor::clean_names(jul2)
+oct2 <- janitor::clean_names(oct2)
+
+apr3 <- janitor::clean_names(apr3)
+jan3 <- janitor::clean_names(jan3)
   # Got rid of the tildes
-  # Es menos ehstoopeed
+  # Ahora es menos ehstoopeedo
 
-# Wasted a bunch of time looking up "merge" instead of "append".
-dfyear <- rbind(jan, apr, jul, oct)
-  # This was much easier than I thought.
-  # Practice practice practice.
+dfyear22 <- rbind(jan, apr, jul, oct)
+# dfyear21 <- rbind(jan2, apr2, jul2, oct2)
+  # It appears that some of the 2021 data is missing a few variables
+  # Fix by selecting first
+apr2 %>% colnames()
+jan2 %>% colnames()
+oct2 %>% colnames()
 
-# Got the full year of data
+# dfyear <- rbind(jan, apr, jul, oct, jan2, apr2, jul2, oct2)
+
+# Got the full year of data (2022)
   # Let's get rid of some of these irrelevant/empty columns
   # Date and time ought to be split up too
 
-dfyear <- dfyear %>% remove_empty_columns()
+# dfyear22 <- dfyear22 %>% remove_empty_columns()
   # Hmmm this needs a bit more. Easier to pick out what *is* relevant
-dfyear %>% colnames()
-dfyear <- dfyear %>% select(date_hour=hora_de_publicacion,post_id=identificador_de_la_publicacion,
-                            title=titulo, description=descripcion, total_clicks=total_de_clics, 
-                            other_clicks=otros_clics, photo_views=visualizaciones_de_fotos,
-                            link_clicks=clics_en_el_enlace, three_second_video_plays=reproduccion_de_video_de_3_segundos,
-                            comments=comentarios, likes=me_gusta, shares=veces_compartido,
-                            engagements=interacciones, reach=personas_alcanzadas,
-                            impressions=impresiones, hidden_unique_negative_comments=comentarios_negativos_unicos_de_los_usuarios_ocultar,
-                            all_hidden_unique_negative_comments=comentarios_negativos_unicos_de_los_usuarios_ocultar_todo)
+dfyear22 %>% colnames()
+dfyear22 <- dfyear22 %>% select(date_hour=hora_de_publicacion, impressions=impresiones, 
+                                likes=me_gusta, shares=veces_compartido, 
+                                total_clicks=total_de_clics, engagements=interacciones,
+                                description=descripcion, other_clicks=otros_clics, 
+                                photo_views=visualizaciones_de_fotos,
+                                comments=comentarios, reach=personas_alcanzadas)
+
+# The 2021 data is being annoying about variables so we gotta pare down the columns first
+jan2 <- jan2 %>% select(date_hour=hora_de_publicacion, impressions=impresiones, 
+                        likes=me_gusta, shares=veces_compartido, 
+                        total_clicks=total_de_clics, engagements=interacciones,
+                        description=descripcion, other_clicks=otros_clics, 
+                        photo_views=visualizaciones_de_fotos,
+                        comments=comentarios, reach=personas_alcanzadas)
+  # Found the missing variables. The unique_negative_comments_hidden and _total.
+    # That's okay. Wasn't planning anything for those, so can get rid of them in
+    # the other dfs too. It is interesting data tho.
+
+apr2 <- apr2 %>% select(date_hour=hora_de_publicacion, impressions=impresiones, 
+                        likes=me_gusta, shares=veces_compartido, 
+                        total_clicks=total_de_clics, engagements=interacciones,
+                        description=descripcion, other_clicks=otros_clics, 
+                        photo_views=visualizaciones_de_fotos,
+                        comments=comentarios, reach=personas_alcanzadas)
+
+jul2 <- jul2 %>% select(date_hour=hora_de_publicacion, impressions=impresiones, 
+                        likes=me_gusta, shares=veces_compartido, 
+                        total_clicks=total_de_clics, engagements=interacciones,
+                        description=descripcion, other_clicks=otros_clics, 
+                        photo_views=visualizaciones_de_fotos,
+                        comments=comentarios, reach=personas_alcanzadas)
+
+oct2 <- oct2 %>% select(date_hour=hora_de_publicacion, impressions=impresiones, 
+                        likes=me_gusta, shares=veces_compartido, 
+                        total_clicks=total_de_clics, engagements=interacciones,
+                        description=descripcion, other_clicks=otros_clics, 
+                        photo_views=visualizaciones_de_fotos,
+                        comments=comentarios, reach=personas_alcanzadas)
+
+# 2023 Data too
+apr3 <- apr3 %>% select(date_hour=hora_de_publicacion, impressions=impresiones, 
+                        likes=me_gusta, shares=veces_compartido, 
+                        total_clicks=total_de_clics, engagements=interacciones,
+                        description=descripcion, other_clicks=otros_clics, 
+                        photo_views=visualizaciones_de_fotos,
+                        comments=comentarios, reach=personas_alcanzadas)
+
+jan3 <- jan3 %>% select(date_hour=hora_de_publicacion, impressions=impresiones, 
+                        likes=me_gusta, shares=veces_compartido, 
+                        total_clicks=total_de_clics, engagements=interacciones,
+                        description=descripcion, other_clicks=otros_clics, 
+                        photo_views=visualizaciones_de_fotos,
+                        comments=comentarios, reach=personas_alcanzadas)
 
 # Now it's less busy and has Anglo-ish column names.
+
+dfyear21 <- rbind(jan2, apr2, jul2, oct2)
+dfyear23 <- rbind(jan3, apr3)
+dfyear <- rbind(dfyear21,dfyear22,dfyear23)
+
+# Now we've got a df for each year and one for all of them. Perfect
 
 # This selection bugs me for a few reasons.
 
@@ -65,10 +139,18 @@ dfyear <- dfyear %>% select(date_hour=hora_de_publicacion,post_id=identificador_
 
   # I picked what actually had data and seemed like it *could* be relevant.
     # Still probably not going to use half these columns. Might select again later.
+    # Edit: pared it down even more. Was getting unwieldy.
 
-  # I also don't know exactly how all these things are calculated by Meta.
-    # What is an "impression" and why does it seem like there are values in negative_comments
-    # which aren't included in negative_comments_total?
+  # Edit: I put in the 2021 data to be able to work with Prophet more, but there's
+    # a reason I excluded it to begin with. The page only started in March 2020.
+    # Any major data skewing world events happening at the time? It started *after*
+    # The pandemic began, so there's no before/after data. But there's also the
+    # issue of 2021 with still being a small page with few followers and the weird
+    # data that can come with small numbers and such.
+    # Still think it's worth it though.
+
+  # Edit: Added 2023 Jan-Apr
+    # Many of the same caveats.
 
 dfyear <- dfyear %>% 
   separate_wider_delim(date_hour, delim = " ", names = c("date", "time"))
@@ -96,7 +178,7 @@ lubridate::day(day)
 lubridate::week(day)
   # There's also a holidays function for different cultures etc.
 weekdays(day)
-  # This super useful for checking weekends and such. Remember this
+  # This super useful for checking weekends and such. Remember this!
 
 dfyear$date <- dfyear$date %>% 
   as.POSIXct(format="%m/%d/%Y")
@@ -123,7 +205,43 @@ dfyear$time <- strftime(dfyear$time, format="%H:%M")
   # Same as the last one. Maybe can get one of these to work somehow, but I've wasted
   # Too much time on it already.
 
-class(dfyear$time)
+# Edit: Need to do for new seperate 2021 and 2022 dfs.
+
+# 2021
+dfyear21 <- dfyear21 %>% 
+  separate_wider_delim(date_hour, delim = " ", names = c("date", "time"))
+
+dfyear21$date <- dfyear21$date %>% 
+  as.POSIXct(format="%m/%d/%Y")
+
+dfyear21$time <- dfyear21$time %>%
+  as.POSIXct(format="%H:%M")
+
+dfyear21$time <- strftime(dfyear21$time, format="%H:%M")
+
+# 2022
+dfyear22 <- dfyear22 %>% 
+  separate_wider_delim(date_hour, delim = " ", names = c("date", "time"))
+
+dfyear22$date <- dfyear22$date %>% 
+  as.POSIXct(format="%m/%d/%Y")
+
+dfyear22$time <- dfyear22$time %>% 
+  as.POSIXct(format="%H:%M")
+
+dfyear22$time <- strftime(dfyear22$time, format="%H:%M")
+
+# 2023
+dfyear23 <- dfyear23 %>% 
+  separate_wider_delim(date_hour, delim = " ", names = c("date", "time"))
+
+dfyear23$date <- dfyear23$date %>% 
+  as.POSIXct(format="%m/%d/%Y")
+
+dfyear23$time <- dfyear23$time %>% 
+  as.POSIXct(format="%H:%M")
+
+dfyear23$time <- strftime(dfyear23$time, format="%H:%M")
 
 
 # We need a new variable to show what is or is not OC
@@ -154,22 +272,106 @@ oc <- oc %>%
   unique()
   # Caught one of the descriptions with the word "social". Gotta deal with repeats.
 
-dfyear$vectorific <- vectorific <- c(1:693)
+dfyear$vectorific <- vectorific <- c(1:1490)
 class(vectorific)
 isOc <- vectorific %in% oc 
 
-# dfyear %>% 
-#   filter(.by = vectorific %in% oc)
-
 dfyear$isOc <-  isOc
   # Got it in there. Logical might be a problem, but it's there now.
+
+# Edit: Need to do for 2021 and 2022
+
+# 2021
+oc <- grep("OC",dfyear21$description)
+oc2 <- grep("O.c",dfyear21$description)
+oc3 <- grep("oc", dfyear21$description)
+oc4 <- grep("O.C",dfyear21$description)
+oc5 <- grep("\\(O\\)",dfyear21$description)
+oc6 <- grep("\\(o\\)",dfyear21$description)
+
+oc<-append(oc, oc2)
+oc<-append(oc, oc3)
+oc<-append(oc, oc4)
+oc<-append(oc, oc5)
+
+oc <- oc %>% 
+  unique()
+
+dfyear21$vectorific <- vectorific <- c(1:668)
+class(vectorific)
+isOc <- vectorific %in% oc 
+
+dfyear21$isOc <-  isOc
+
+# 2022
+oc <- grep("OC",dfyear22$description)
+oc2 <- grep("O.c",dfyear22$description)
+oc3 <- grep("oc", dfyear22$description)
+oc4 <- grep("O.C",dfyear22$description)
+oc5 <- grep("\\(O\\)",dfyear22$description)
+oc6 <- grep("\\(o\\)",dfyear22$description)
+
+oc<-append(oc, oc2)
+oc<-append(oc, oc3)
+oc<-append(oc, oc4)
+oc<-append(oc, oc5)
+
+oc <- oc %>% 
+  unique()
+
+dfyear22$vectorific <- vectorific <- c(1:693)
+class(vectorific)
+isOc <- vectorific %in% oc 
+
+dfyear22$isOc <-  isOc
+
+# 2023
+oc <- grep("OC",dfyear23$description)
+oc2 <- grep("O.c",dfyear23$description)
+oc3 <- grep("oc", dfyear23$description)
+oc4 <- grep("O.C",dfyear23$description)
+oc5 <- grep("\\(O\\)",dfyear23$description)
+oc6 <- grep("\\(o\\)",dfyear23$description)
+
+oc<-append(oc, oc2)
+oc<-append(oc, oc3)
+oc<-append(oc, oc4)
+oc<-append(oc, oc5)
+
+oc <- oc %>% 
+  unique()
+
+dfyear23$vectorific <- vectorific <- c(1:129)
+class(vectorific)
+isOc <- vectorific %in% oc 
+
+dfyear23$isOc <-  isOc
+
 
 # Gonna need to manually input it if we want to show who made which posts.
   # That means manually scrolling the page's Facebook feed and writing who made what.
   # ...For 693 posts across a whole year.
   # Why doesn't Meta just record which admin made what in Business Suite?
   # The Zucc does not like to be questioned.
+  # Edit: with all three years it would be 1490 posts. Sorry, but I'm not doing that.
 
-# Look at prophet package for new thing to learn
-  # Date and time series
-  # Made for facebook data
+# Prophet has made me wanna know how we do on different days of the week too
+dfyear$weekday <- weekdays(dfyear$date)
+dfyear21$weekday <- weekdays(dfyear21$date)
+dfyear22$weekday <- weekdays(dfyear22$date)
+dfyear23$weekday <- weekdays(dfyear23$date)
+
+
+dfyear %>% 
+  write.csv(file = "./dfyear.csv")
+
+dfyear21 %>% 
+  write.csv(file = "./dfyear21.csv")
+
+dfyear22 %>% 
+  write.csv(file = "./dfyear22.csv")
+
+dfyear23 %>% 
+  write.csv(file = "./dfyear23.csv")
+
+# Just occurred to me that I could have used for loops for some of that. Oh well.
